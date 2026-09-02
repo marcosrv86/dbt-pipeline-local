@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: sistema_origen 
+    database: analytics-lab-sandbox 
+    schema: raw_data 
+    tables:
+      - name: cosecha_2026
+        description: "Datos crudos de extracción."

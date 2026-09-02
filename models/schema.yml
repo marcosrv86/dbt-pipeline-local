@@ -1,0 +1,47 @@
+
+version: 2
+
+models:
+    - name: my_first_dbt_model
+      description: "A starter dbt model"
+      columns:
+          - name: id
+            description: "The primary key for this table"
+            tests:
+                - unique
+                - not_null
+
+    - name: my_second_dbt_model
+      description: "A starter dbt model"
+      columns:
+          - name: id
+            description: "The primary key for this table"
+            tests:
+                - unique
+                - not_null
+
+
+
+    - name: mart_produccion_pivot
+      description: "Data Mart que contiene la matriz dinámica de producción. Pivota los volúmenes de barriles a nivel de provincia utilizando dbt_utils."
+      columns:
+          - name: id_pozo
+            description: "Identificador único alfanumérico de cada pozo petrolero."
+            tests:
+                - unique
+                - not_null
+
+    - name: fct_produccion_pivot
+      description: "Data Mart que contiene la matriz dinámica de producción. Pivota los volúmenes de barriles a nivel de provincia utilizando dbt_utils."
+      columns:
+          - name: id_pozo
+            description: "Identificador único alfanumérico de cada pozo petrolero."
+            tests:
+                - unique
+                - not_null
+          
+          - name: provincia
+            description: "Nombre de provincia"
+            tests:
+               - accepted_values:
+                   values: ['Neuquén', 'Chubut', 'Santa Cruz', 'Mendoza', 'Salta'] 

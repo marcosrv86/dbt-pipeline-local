@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: fct_produccion_pozos
+    description: "Tabla de hechos final con la producción y métricas por pozo."
+    columns:
+      - name: id_pozo
+        description: "Clave primaria del pozo."
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('mapa_pozos')
+                field: id_pozo
+
+      - name: total_barriles
+        description: "Suma total de barriles extraídos."
+        tests:
+          - not_null
+          
+      - name: provincia
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["Neuquén", "Mendoza", "Santa Cruz", "Chubut", "Salta"]
