@@ -7,3 +7,10 @@ sources:
     tables:
       - name: cosecha_2026
         description: "Datos crudos de extracción."
+  - name: sistema_origen_raw
+    description: "Datos crudos provenientes de las extracciones operativas"
+    database: analytics-lab-sandbox
+    schema: sistema_origen_raw
+    tables:
+      - name: fct_extraccion_diaria
+        description: "Tabla diaria de extracciones de petróleo, agua y presiones por pozo"        
