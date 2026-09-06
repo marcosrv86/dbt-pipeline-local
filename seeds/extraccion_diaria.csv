@@ -1,0 +1,7 @@
+id_pozo,fecha_extraccion,volumen_petroleo_m3,volumen_agua_m3,presion_psi,bomba_activa,estado_operativo
+L001,2026-09-01,45.5,12.2,1250.5,true,Normal
+L002,2026-09-01,0.0,0.0,0.0,false,Mantenimiento
+L003,2026-09-01,38.2,15.1,1180.0,true,Normal
+L001,2026-09-02,46.1,11.8,1245.2,true,Normal
+L002,2026-09-02,15.0,5.5,900.0,true,Reinicio
+L004,2026-09-02,55.8,8.4,1310.8,true,Normal
