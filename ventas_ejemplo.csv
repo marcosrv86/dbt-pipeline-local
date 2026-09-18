@@ -3,5 +3,5 @@ id_venta,fecha,cliente,producto,monto,cantidad
 102,2026-03-01,Cliente B,Mouse,25.00,2
 103,2026-03-02,Cliente A,Teclado,45.00,1
 104,2026-03-02,Cliente C,Monitor,300.00,2
-105,2026-03-03,Cliente B,Laptop,1200.50,1
+105,2026-03-03,Cliente B,Laptop,95000.00,1
 
