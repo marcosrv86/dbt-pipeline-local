@@ -1,48 +1,34 @@
+import subprocess
 from dagster import asset, Definitions
-from pipeline_poo import ExtractorCSV, TransformadorEstadistico
-import pandas as pd
 from extractor_erp import ExtractorERP
 from cargador_bq import CargadorBigQuery
 
 @asset
-def procesar_datos_ml():
-    """
-    Asset que ejecuta la extracción y el perfilado estadístico 
-    utilizando Programación Orientada a Objetos.
-    """
-    # 1. Instanciamos las clases
-    extractor = ExtractorCSV("ventas_ejemplo.csv")
-    transformador = TransformadorEstadistico("monto")
-    
-    # 2. Ejecutamos el flujo
-    df_crudo = extractor.extraer()
-    df_sin_anomalias = transformador.detectar_anomalias_iqr(df_crudo)
-    df_perfilado = transformador.analizar_correlacion(df_sin_anomalias)
-    
-    # 3. Validamos para Dagster
-    if df_perfilado.empty:
-        raise Exception("El pipeline devolvió un DataFrame vacío.")
-        
-    return f"Pipeline ejecutado exitosamente. Filas procesadas: {len(df_perfilado)}"
-
-defs = Definitions(
-    assets=[procesar_datos_ml]
-)
-@asset
 def ingesta_erp_a_bigquery():
-    """Pipeline orientado a objetos para extraer de un ERP y cargar en BQ."""
-    
-    # 1. Instanciamos los objetos
-    # Reemplaza 'tu-proyecto-id' con el ID real de tu entorno en Google Cloud
+    # ... (Tu código actual de instanciar ExtractorERP y CargadorBigQuery queda exactamente igual) ...
     extractor = ExtractorERP("ERP_Produccion_AR")
     cargador = CargadorBigQuery(project_id="analytics-lab-sandbox", dataset_id="raw_data")
-    
-    # 2. Ejecutamos los métodos
     diccionario_datos = extractor.extraer_compras()
     resultado_carga = cargador.cargar_diccionario(diccionario_datos)
-    
     return resultado_carga
 
+# ---> PEGA AQUÍ TU NUEVO BLOQUE, REEMPLAZANDO EL ANTERIOR <---
+@asset(deps=[ingesta_erp_a_bigquery])
+def transformar_y_testear_erp():
+    """Ejecuta el modelo incremental y luego pasa los tests de calidad."""
+    
+    # 1. Ejecutar el modelo
+    subprocess.run(["dbt", "run", "--select", "mart_compras_detalle"], check=True)
+    
+    # 2. Ejecutar los tests (Dagster fallará si algún test no pasa)
+    resultado_tests = subprocess.run(["dbt", "test", "--select", "mart_compras_detalle"], capture_output=True, text=True)
+    
+    if resultado_tests.returncode != 0:
+        raise Exception(f"Fallo en Data Quality.\nLog: {resultado_tests.stdout}")
+        
+    return "Modelo materializado y validado con éxito (0 nulos, 0 valores no aceptados)"
+
+# ---> IMPORTANTE: ACTUALIZA EL NOMBRE EN LAS DEFINICIONES AL FINAL <---
 defs = Definitions(
-    assets=[ingesta_erp_a_bigquery]
+    assets=[ingesta_erp_a_bigquery, transformar_y_testear_erp]
 )

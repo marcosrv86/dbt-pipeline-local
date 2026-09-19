@@ -20,3 +20,10 @@ sources:
     tables:
       - name: tbl_ventas
         description: "Tabla de ventas extraída desde CSV mediante Python"        
+
+  - name: raw_data
+    description: "Dataset de ingesta cruda en BigQuery"
+    tables:
+      - name: tbl_ventas
+      - name: raw_cabeceras_compra # Nueva tabla cargada por el bot ERP
+      - name: raw_posiciones_compra # Nueva tabla cargada por el bot ERP      
