@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: mart_compras_detalle
+    description: "Tabla desnormalizada (plana) que unifica el nivel de cabecera y posición de las compras del ERP. Utilizada para analítica de volumen."
+    columns:
+      - name: id_documento
+        description: "Clave primaria del documento de compra originada en el sistema transaccional."
+        tests:
+          - not_null
+      - name: id_proveedor
+        description: "Código alfanumérico único que identifica al proveedor."
+        tests:
+          - not_null
+      - name: categoria_volumen
+        description: "Regla de negocio estática: Clasifica la compra como 'Volumen Alto' si supera las 1000 unidades, caso contrario 'Volumen Estándar'."
+        tests:
+          - accepted_values:
+              values: ['Volumen Alto', 'Volumen Estándar']
