@@ -16,4 +16,8 @@ models:
         description: "Regla de negocio estática: Clasifica la compra como 'Volumen Alto' si supera las 1000 unidades, caso contrario 'Volumen Estándar'."
         tests:
           - accepted_values:
-              values: ['Volumen Alto', 'Volumen Estándar']
+              values: ['Volumen Alto', 'Volumen Estándar','Volumen Medio']
+      - name: cantidad
+        tests:
+          - not_null
+          - no_negativo        
